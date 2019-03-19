@@ -18,18 +18,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         tableView = UITableView(frame: view.frame)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
-        
         tableView.delegate = self
         tableView.dataSource = self
+        view.addSubview(tableView)
         
         dataArray = Array()
         for i in 0 ..< 50 {
             dataArray?.append(String(format: "第%d行数据", i))
         }
         
-        view.addSubview(tableView)
+        //tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -45,9 +43,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = dataArray![indexPath.row]
-        return cell
+        // let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        
+        // 手动注册 Cell
+        var cell = tableView.dequeueReusableCell(withIdentifier: "cellID")
+        if cell == nil {
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cellID")
+        }
+        
+        cell?.textLabel?.text = dataArray![indexPath.row]
+        return cell!
     }
     
 }
